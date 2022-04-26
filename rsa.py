@@ -7,7 +7,7 @@
 # Compute d, multiplicative inverse of e modulo m 			(LEFT)
 # P(e,n) public key
 # S(d,n) private key
-# Create M, the message converted to ASCII 				(LEFT)
+# ASCII to message and message to ASCII converter			(LEFT)
 # P(M) = M^e mod n = C (encryption) 
 # S(C) = C^d mod n = M (decryption)
 # Implement signatures 							(LEFT)
