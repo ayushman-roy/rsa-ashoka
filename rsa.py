@@ -1,19 +1,17 @@
-# Basic Algorithm Structure:
-
+# Algorithm:
 # Create random big number generator
 # Check for primality by LowPrime and MillerRabinTest
 # If prime make n = p * q
 # Create m = (p - 1) * (q - 1)
-
 # Compute e, coprime of m and very small odd integer
-# Compute d, multiplicative inverse of e modulo m
+# Compute d, multiplicative inverse of e modulo m 			(LEFT)
 # P(e,n) public key
 # S(d,n) private key
-# M is the message converted to ASCII
-# P(M) = M^e mod n (becomes C - encryption) and S(C) = C^d mod n (becomes M - decryption)
-# Implement signatures
-# Make presenatation, proofs and compute complexities
-# Check for plagarism 
+# Create M, the message converted to ASCII 				(LEFT)
+# P(M) = M^e mod n = C (encryption) 
+# S(C) = C^d mod n = M (decryption)
+# Implement signatures 							(LEFT)
+# Make presentation, proofs and compute complexities for all code 	(LEFT)
 
 import random
 
@@ -32,7 +30,7 @@ first_primes_list = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
 def nBitRandom(n):
 	return random.randrange(2**(n-1)+1, 2**n - 1)
 
-# number not divisible by low primes
+# numbers not divisible by low primes
 def getLowLevelPrime(n):
 	while True:
 		pc = nBitRandom(n)
@@ -41,6 +39,7 @@ def getLowLevelPrime(n):
 				break
 		else: 
 			return pc
+
 # large level prime test
 def isMillerRabinPassed(mrc):
 	maxDivisionsByTwo = 0
@@ -79,5 +78,45 @@ primeProduct = primeCandidateA * primeCandidateB
 # assert: m = (p - 1) * (q - 1)
 primeNewProduct = (primeCandidateA-1) * (primeCandidateB-1)
 
-print(primeCandidateA, primeCandidateB)
-print(primeProduct, primeNewProduct)
+def gcd(p,q):
+    while q != 0:
+        p, q = q, p%q
+    return p
+
+# if gcd = 1, then coprime
+def isCoPrime(x, y):
+    return gcd(x, y) == 1
+
+# checks if e, m are coprimes
+while True:
+	e = random.randrange(2, 25)
+	if isCoPrime(primeNewProduct, e):
+		break
+
+# compute d: multiplicative inverse of e modulo m
+d = ''
+
+# keys
+publicKey = (e, primeProduct)
+privateKey = (d, primeProduct)
+
+# converts message to ASCII
+def messageConversion(message):
+	M = message 
+	return M
+
+# input message and conversion to ASCII
+message = input("Enter Your Message Here:")
+convertedMessage = messageConversion(message)
+
+# encryption: P(M) = M^e mod n = C
+def encryption(M):
+	ciphertext = (M**e) % primeProduct
+	return ciphertext
+encryptedMessage = encryption(convertedMessage)
+
+# decryption: S(C) = C^d mod n = M
+def decryption(C):
+	message = (C**d) % primeProduct
+	return message
+decryptedMessage = decryption(encryptedMessage)
