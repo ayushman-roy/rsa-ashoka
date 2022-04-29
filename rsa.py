@@ -35,6 +35,8 @@ def randomGenerator(n):
 def lowLevelPrimeCheck(n):
 	while True:
 		p = randomGenerator(n)
+		
+		
 		for divisor in first_primes_list:
 			if p % divisor == 0 and divisor**2 <= p:
 				break
@@ -219,3 +221,20 @@ def ASCIIToMessageConversion(message):
 
 # returns the decrypted message as string
 ASCIIToMessageConversion(decryptedMessage)
+
+
+
+
+
+#generating and displaying public key = (e, n)
+public = (e,n)
+
+#generating and displaying private key = (e,m0
+private = (d,n)
+
+print("public key", public)
+print("private key", private)
+
+#Initialising Message
+message = input("Enter message to encrypt: ")
+print("message: ", message) 
