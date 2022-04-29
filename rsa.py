@@ -7,7 +7,7 @@
 # Compute d, multiplicative inverse of e modulo m 			(LEFT)
 # P(e,n) public key
 # S(d,n) private key
-# ASCII to message and message to ASCII converter			(LEFT)
+# ASCII to message and message to ASCII converter			
 # P(M) = M^e mod n = C (encryption) 
 # S(C) = C^d mod n = M (decryption)
 # Implement signatures 							(LEFT)
@@ -101,13 +101,15 @@ publicKey = (e, primeProduct)
 privateKey = (d, primeProduct)
 
 # converts message to ASCII
-def messageConversion(message):
-	M = message 
+def messageToASCIIConversion(message):
+	M = []
+	for i in message:
+		M.append(ord(i))
 	return M
 
 # input message and conversion to ASCII
 message = input("Enter Your Message Here:")
-convertedMessage = messageConversion(message)
+ASCIIconvertedMessage = messageConversion(message)
 
 # encryption: P(M) = M^e mod n = C
 def encryption(M):
@@ -120,3 +122,10 @@ def decryption(C):
 	message = (C**d) % primeProduct
 	return message
 decryptedMessage = decryption(encryptedMessage)
+
+# converts ASCII to message
+def ASCIIToMessageConversion(message)
+	R = ""
+	for val in message:
+    		R += chr(message)
+	return R
