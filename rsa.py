@@ -226,15 +226,6 @@ ASCIIToMessageConversion(decryptedMessage)
 
 
 
-#generating and displaying public key = (e, n)
-public = (e,n)
 
-#generating and displaying private key = (e,m)
-private = (d,n)
 
-print("public key", public)
-print("private key", private)
 
-#Initialising Message
-message = input("Enter message to encrypt: ")
-print("message: ", message) 
