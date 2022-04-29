@@ -5,16 +5,19 @@
 # If prime make n = p * q
 # Create m = (p - 1) * (q - 1)
 # Compute e, coprime of m and very small odd integer
-# Compute d, multiplicative inverse of e modulo m 					(LEFT)
+# Compute d, multiplicative inverse of e modulo m 					
 # P(e,n) public key
 # S(d,n) private key
 # Create M, the message converted to ASCII 							
 # P(M) = M^e mod n = C (encryption) 
 # S(C) = C^d mod n = M (decryption)
-# Implement signatures 												(LEFT)
+# Implement signatures 							(MAYBE)
 # Make presentation, proofs and compute complexities for all code 	(LEFT)
 
 import random
+import time
+
+startTime = time.time()
 
 # pre-generated primes for low level prime test
 first_primes_list = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
@@ -35,8 +38,6 @@ def randomGenerator(n):
 def lowLevelPrimeCheck(n):
 	while True:
 		p = randomGenerator(n)
-		
-		
 		for divisor in first_primes_list:
 			if p % divisor == 0 and divisor**2 <= p:
 				break
@@ -44,30 +45,30 @@ def lowLevelPrimeCheck(n):
 			return p
 
 # higher level prime test by Miller Rabin Test
-def isMillerRabinPassed(mrc):
+def isMillerRabinPassed(n):
 	maxDivisionsByTwo = 0
-	ec = mrc-1
+	ec = n-1
 	while ec % 2 == 0:
 		ec >>= 1
 		maxDivisionsByTwo += 1
-	assert(2**maxDivisionsByTwo * ec == mrc-1)
+	assert(2**maxDivisionsByTwo * ec == n-1)
 	def trialComposite(round_tester):
-		if pow(round_tester, ec, mrc) == 1:
+		if pow(round_tester, ec, n) == 1:
 			return False
 		for i in range(maxDivisionsByTwo):
-			if pow(round_tester, 2**i * ec, mrc) == mrc-1:
+			if pow(round_tester, 2**i * ec, n) == n-1:
 				return False
 		return True
 	numberOfRabinTrials = 20
 	for i in range(numberOfRabinTrials):
-		round_tester = random.randrange(2, mrc)
+		round_tester = random.randrange(2, n)
 		if trialComposite(round_tester):
 			return False
 	return True
 
 # generates large primes
 while True:
-    n = 100
+    n = 12
     primeCandidateA = lowLevelPrimeCheck(n)
     primeCandidateB = lowLevelPrimeCheck(n)
     if not isMillerRabinPassed(primeCandidateA) and not isMillerRabinPassed(primeCandidateB):
@@ -99,59 +100,22 @@ while True:
 	if isCoPrime(primeNewProduct, e):
 		break
 
-'''
-def multiplicative_inverse(e, primeNewProduct):
-    d = 0
-    x1 = 0
-    x2 = 1
-    y1 = 1
-    temp_p = primeNewProduct
-    while e > 0:
-        temp1 = temp_p//e
-        temp2 = temp_p - temp1 * e
-        temp_p = e
-        e = temp2
-        x = x2 - temp1 * x1
-        y = d - temp1 * y1
-        x2 = x1
-        x1 = x
-        d = y1
-        y1 = y
-    if temp_p == 1:
-        return d
-
-def egcd(a, b):
-    if a == 0:
-        return (b, 0, 1)
-    g, y, x = egcd(b%a,a)
-    return (g, x - (b//a) * y, y)
-
-def modinv(a, m):
-    g, x, y = egcd(a, m)
-    if g != 1:
-        raise Exception('No modular inverse')
-    return x%m
-'''
-
+# calculates d, the multiplicative inverse of e modulo m
 def modInverse(a, m):
-	m0 = m
-	y = 0
-	x = 1
+	m0, x, y = m, 1, 0
 	if (m == 1):
 		return 0
 	while (a > 1):
 		# q is quotient
 		q = a // m
 		t = m
-		# m is remainder now, process
-		# same as Euclid's algo
+		# m is remainder now, same as Euclid
 		m = a % m
-		a = t
-		t = y
-		# Update x and y
+		a, t = t, y
+		# update x and y
 		y = x - q * y
 		x = t
-	# Make x positive
+	# makes x positive
 	if (x < 0):
 		x = x + m0
 	return x
@@ -172,11 +136,10 @@ def messageToASCIIConversion(message):
 	return M
 
 # user input: message
-message = input("Enter Your Message Here:")
+message = input("Enter Your Message Here: ")
 
 # conversion to ASCII
 convertedMessage = messageToASCIIConversion(message)
-print("Message in ASCII:", convertedMessage)
 
 # encryption: P(M) = M^e mod n = C
 def encryption(M):
@@ -194,6 +157,19 @@ def encryption(M):
 encryptedMessage = encryption(convertedMessage)
 print("Encrypted Message:", encryptedMessage)
 
+# password for initiating decryption
+password = "1234"
+
+# user prompt for decryption
+decryptionInput = input("Do You Want To Decrypt The Message? \nEnter Y for Yes and N for No: ")
+if(decryptionInput == "Y" or "y"):
+	askPassword = True
+
+# password checker
+while askPassword:
+		userPassword = input("Enter The Password: ")
+		if (userPassword == password):
+			askPassword = False
 
 # decryption: S(C) = C^d mod n = M
 def decryption(C):
@@ -205,27 +181,21 @@ def decryption(C):
 		message = (ciphertext**d) % primeProduct
 		decryptedList[index] = message - temp
 		if (index >= 1):
-			temp = message
+			temp = ciphertext
 		index -= 1
 	return decryptedList
 
 decryptedMessage = decryption(encryptedMessage)
 print("Decrypted Message: ", decryptedMessage)
 
-#converts ASCII list to message string 
+# converts ASCII list to message string 
 def ASCIIToMessageConversion(message):
 	R = ""
 	for val in message:
-		R += chr(message)
+		R += chr(val)
 	return R
 
 # returns the decrypted message as string
-ASCIIToMessageConversion(decryptedMessage)
-
-
-
-
-
-
-
-
+finalmessage = ASCIIToMessageConversion(decryptedMessage)
+print("The Message Receieved Was: ", finalmessage)
+print("Time Elapsed: ", time.time() - startTime)
