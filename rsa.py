@@ -94,7 +94,29 @@ while True:
 		break
 
 # compute d: multiplicative inverse of e modulo m
-d = ''
+def multiplicative_inverse(e, primeNewProduct):
+    d = 0
+    x1 = 0
+    x2 = 1
+    y1 = 1
+    temp_p = primeNewProduct
+
+    while e > 0:
+        temp1 = temp_p//e
+        temp2 = temp_p - temp1 * e
+        temp_p = e
+        e = temp2
+
+        x = x2 - temp1 * x1
+        y = d - temp1 * y1
+
+        x2 = x1
+        x1 = x
+        d = y1
+        y1 = y
+
+    if temp_p == 1:
+        return d + primeNewProduct
 
 # keys
 publicKey = (e, primeProduct)
