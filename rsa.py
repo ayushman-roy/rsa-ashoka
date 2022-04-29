@@ -229,7 +229,7 @@ ASCIIToMessageConversion(decryptedMessage)
 #generating and displaying public key = (e, n)
 public = (e,n)
 
-#generating and displaying private key = (e,m0
+#generating and displaying private key = (e,m)
 private = (d,n)
 
 print("public key", public)
