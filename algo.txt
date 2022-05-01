@@ -1,0 +1,13 @@
+Algorithm:
+
+1.  Generate random big number
+2.  Check for primality
+3.  If prime, make n = p * q & m = (p - 1) * (q - 1)
+4.  Compute e, very small odd integer coprime of m
+5.  Compute d, multiplicative inverse of e modulo m 					
+6.  Release P(e,n) as public key
+7.  Store S(d,n) as private key
+8.  Create M, the message converted to ASCII 							
+9.  Encryption: P(M) = M^e mod n = C
+10. Decryption S(C) = C^d mod n = M
+11. Convert decrypted ASCII to normal characters and output
