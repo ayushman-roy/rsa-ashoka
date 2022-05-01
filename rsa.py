@@ -26,7 +26,8 @@ while True:
 	e = randrange(2, 25)
 	if isCoPrime(primeNewProduct, e):
 		break
-
+		
+# Reference: Geek for Geeks
 # calculates the multiplicative inverse
 def modInverse(a, m):
 	m0, x, y = m, 1, 0
@@ -62,6 +63,7 @@ def messageToASCIIConversion(message):
 message = input("Enter Your Message Here: ")
 convertedMessage = messageToASCIIConversion(message)
 
+# Reference: Geek for Geeks
 # calculates (x^y)%p
 def power(x, y, p) :
 	res = 1
